@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
                 finish();
                 */
+                Toast.makeText(MainActivity.this,"Success",Toast.LENGTH_SHORT);
             }
 
         }
