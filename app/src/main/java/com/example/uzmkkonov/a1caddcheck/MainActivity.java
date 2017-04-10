@@ -72,14 +72,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
                 finish();
                 */
-                Toast.makeText(MainActivity.this,"Success",Toast.LENGTH_SHORT);
+                //Toast.makeText(MainActivity.this,"Success",Toast.LENGTH_SHORT);
             }
-
         }
 
         @Override
         protected String doInBackground(String... params) {
-            if(userid.trim().equals("")|| password.trim().equals(""))
+//            if(userid.trim().equals("")|| password.trim().equals(""))
+            if(userid.trim().equals(""))
                 z = "Please enter User Id and Password";
             else
             {
@@ -88,22 +88,21 @@ public class MainActivity extends AppCompatActivity {
                     if (con == null) {
                         z = "Error in connection with SQL server";
                     } else {
-                        String query = "select * from Usertbl where UserId='" + userid + "' and password='" + password + "'";
+                        String query = "SELECT [elbase].[dbo].[UserAuth]('" + userid + "','" + password + "')";
                         Statement stmt = con.createStatement();
                         ResultSet rs = stmt.executeQuery(query);
 
                         if(rs.next())
                         {
+                            if(rs.getInt(1)==1) {
 
-                            z = "Login successfull";
-                            isSuccess=true;
+                                z = "Login successfull";
+                                isSuccess = true;
+                                return z;
+                            }
                         }
-                        else
-                        {
-                            z = "Invalid Credentials";
-                            isSuccess = false;
-                        }
-
+                        z = "Invalid Credentials";
+                        isSuccess = false;
                     }
                 }
                 catch (Exception ex)
