@@ -1,5 +1,6 @@
 package com.example.uzmkkonov.a1caddcheck;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -67,11 +68,11 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this,r,Toast.LENGTH_SHORT).show();
 
             if(isSuccess) {
-                /*
-                Intent i = new Intent(MainActivity.this, AddProducts.class);
+
+                Intent i = new Intent(MainActivity.this, FullCheckActivity.class);
                 startActivity(i);
                 finish();
-                */
+
                 //Toast.makeText(MainActivity.this,"Success",Toast.LENGTH_SHORT);
             }
         }
@@ -88,21 +89,15 @@ public class MainActivity extends AppCompatActivity {
                     if (con == null) {
                         z = "Error in connection with SQL server";
                     } else {
-                        String query = "SELECT [elbase].[dbo].[UserAuth]('" + userid + "','" + password + "')";
-                        Statement stmt = con.createStatement();
-                        ResultSet rs = stmt.executeQuery(query);
-
-                        if(rs.next())
+                        User usr = new User(userid,password);
+                        if(!usr.userID.isEmpty())
                         {
-                            if(rs.getInt(1)==1) {
-
-                                z = "Login successfull";
-                                isSuccess = true;
-                                return z;
-                            }
+                            DataHolder.setData("LoggedUser", usr);
+                            z = "Login successfull";
+                            isSuccess = true;
+                            return z;
                         }
-                        z = "Invalid Credentials";
-                        isSuccess = false;
+                        else isSuccess = false;
                     }
                 }
                 catch (Exception ex)
