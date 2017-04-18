@@ -20,6 +20,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class SearchableItemActivity extends ListActivity {
@@ -37,14 +38,14 @@ public class SearchableItemActivity extends ListActivity {
                 productItem.fillRemains();
                 productItem.fillPrice();
                 if(DataHolder.getData("DataItemsTmp")!=null) {
-                    ArrayList<Product> oldItems = (ArrayList<Product>) DataHolder.getData("DataItemsTmp");
-                    oldItems.add(productItem);
+                    HashMap<String,Product> oldItems = (HashMap<String,Product>) DataHolder.getData("DataItemsTmp");
+                    oldItems.put(productItem.id, productItem);
                     DataHolder.setData("DataItemsTmp",oldItems);
                 }
                 else {
-                    ArrayList<Product> newAdapter = new ArrayList<Product>();
-                    newAdapter.add(productItem);
-                    DataHolder.setData("DataItemsTmp", newAdapter);
+                    HashMap<String,Product> saveItems = new HashMap<String, Product>();
+                    saveItems.put(productItem.id,productItem );
+                    DataHolder.setData("DataItemsTmp", saveItems);
                 }
                 Intent runAddCheckActivity = new Intent(SearchableItemActivity.this, FullCheckActivity.class);
                 startActivity(runAddCheckActivity);

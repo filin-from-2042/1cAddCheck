@@ -7,17 +7,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Set on 12.04.2017.
- */
 
 public class Product {
-    private String id;
+    ///TODO: получение id должно быть через  get
+    public String id;
     public String code;
     public String name;
     public String count = "1";
     public String price;
-    public ArrayList<Map<String,String>> remains;
+    public ArrayList<StoreRemainUnit> remains;
 
     ConnectionClass connectionClass;
 
@@ -69,12 +67,8 @@ public class Product {
                 ResultSet rs = stmt.executeQuery(query);
 
                 while (rs.next()) {
-                    if(this.remains == null) this.remains = new ArrayList<Map<String,String>>();
-                    Map<String,String> remain = new HashMap<String, String>();
-                    remain.put("storeID", rs.getString(1));
-                    remain.put("storeDESCR", rs.getString(2));
-                    remain.put("unitCount", rs.getString(3));
-
+                    if(this.remains == null) this.remains = new ArrayList<StoreRemainUnit>();
+                    StoreRemainUnit remain = new StoreRemainUnit(rs.getString(1),rs.getString(2), rs.getString(3));
                     this.remains.add(remain);
                 }
             }
@@ -86,6 +80,6 @@ public class Product {
 
     @Override
     public String toString() {
-        return this.code + ". " + this.name ;
+        return this.code + " | " + this.name ;
     }
 }
