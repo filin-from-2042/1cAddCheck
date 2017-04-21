@@ -5,9 +5,9 @@ public class StoreRemainUnit
 {
     String storeID;
     String storeDESCR;
-    String unitCount;
+    double unitCount;
 
-    public StoreRemainUnit(String storeID, String storeDESCR, String unitCount )
+    public StoreRemainUnit(String storeID, String storeDESCR, double unitCount )
     {
         super();
         this.storeID = storeID;
@@ -17,6 +17,6 @@ public class StoreRemainUnit
 
     @Override
     public String toString() {
-        return this.storeDESCR.toString().trim() + " - " + this.unitCount ;
+        return this.storeDESCR.toString().trim() + " - " + String.valueOf(this.unitCount) ;
     }
 }

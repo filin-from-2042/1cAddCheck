@@ -37,18 +37,21 @@ public class SearchableItemActivity extends ListActivity {
                 Product productItem = (Product)parent.getItemAtPosition(position);
                 productItem.fillRemains();
                 productItem.fillPrice();
-                if(DataHolder.getData("DataItemsTmp")!=null) {
-                    HashMap<String,Product> oldItems = (HashMap<String,Product>) DataHolder.getData("DataItemsTmp");
-                    oldItems.put(productItem.id, productItem);
-                    DataHolder.setData("DataItemsTmp",oldItems);
+                if(DataHolder.getData("newCheck")!=null) {
+                    Check newCheck = (Check) DataHolder.getData("newCheck");
+                    if (newCheck.newItems != null) {
+                        HashMap<String, Product> oldItems = (HashMap<String, Product>) newCheck.newItems;
+                        oldItems.put(productItem.id, productItem);
+                        newCheck.newItems = oldItems;
+                    } else {
+                        HashMap<String, Product> saveItems = new HashMap<String, Product>();
+                        saveItems.put(productItem.id, productItem);
+                        newCheck.newItems = saveItems;
+                    }
+                    DataHolder.setData("newCheck", newCheck);
+                    Intent runAddCheckActivity = new Intent(SearchableItemActivity.this, FullCheckActivity.class);
+                    startActivity(runAddCheckActivity);
                 }
-                else {
-                    HashMap<String,Product> saveItems = new HashMap<String, Product>();
-                    saveItems.put(productItem.id,productItem );
-                    DataHolder.setData("DataItemsTmp", saveItems);
-                }
-                Intent runAddCheckActivity = new Intent(SearchableItemActivity.this, FullCheckActivity.class);
-                startActivity(runAddCheckActivity);
             }
         });
 

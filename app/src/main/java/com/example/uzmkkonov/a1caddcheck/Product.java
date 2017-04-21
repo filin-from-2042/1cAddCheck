@@ -14,7 +14,7 @@ public class Product {
     public String code;
     public String name;
     public String count = "1";
-    public String price;
+    public double price;
     public ArrayList<StoreRemainUnit> remains;
 
     ConnectionClass connectionClass;
@@ -44,7 +44,7 @@ public class Product {
                 ResultSet rs = stmt.executeQuery(query);
 
                 while (rs.next()) {
-                    this.price =  rs.getString(5);
+                    this.price =  rs.getDouble(5);
                 }
             }
         }
@@ -68,7 +68,7 @@ public class Product {
 
                 while (rs.next()) {
                     if(this.remains == null) this.remains = new ArrayList<StoreRemainUnit>();
-                    StoreRemainUnit remain = new StoreRemainUnit(rs.getString(1),rs.getString(2), rs.getString(3));
+                    StoreRemainUnit remain = new StoreRemainUnit(rs.getString(1),rs.getString(2), rs.getDouble(3));
                     this.remains.add(remain);
                 }
             }
