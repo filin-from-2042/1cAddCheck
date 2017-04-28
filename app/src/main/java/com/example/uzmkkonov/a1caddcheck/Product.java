@@ -13,7 +13,7 @@ public class Product {
     public String id;
     public String code;
     public String name;
-    public Double count = 1.0;
+    public double count = 1.0;
     public Double price;
     public ArrayList<StoreRemainUnit> remains;
 

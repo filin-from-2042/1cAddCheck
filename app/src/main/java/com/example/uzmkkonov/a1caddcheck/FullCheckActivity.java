@@ -16,6 +16,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -161,11 +162,16 @@ public class FullCheckActivity extends AppCompatActivity implements View.OnClick
 
                     final TextView price = new TextView(FullCheckActivity.this);
                     price.setTextSize(18);
-                    price.setText(String.format("%.2f",product.price)+" Р");
+                    DecimalFormat dfPr = new DecimalFormat("###.##");
+                    price.setText(dfPr.format(product.price*product.count)+" Р");
 
                     final EditText  cnt = new EditText(FullCheckActivity.this);
                     cnt.setTextSize(18);
-                    cnt.setText(product.count.toString());
+                    //cnt.setText(String.format("%s",product.count));
+
+                    DecimalFormat dfCnt = new DecimalFormat("###.#");
+                    cnt.setText(String.valueOf(dfCnt.format(product.count)));
+
                     cnt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                         public void onFocusChange(View v, boolean hasFocus) {
                             if(!hasFocus &&  cnt.getText().toString().isEmpty()) {
@@ -191,20 +197,20 @@ public class FullCheckActivity extends AppCompatActivity implements View.OnClick
                             if(s.length() != 0){
                                 double priceParsed = product.price;
                                 double countParsed = Double.parseDouble(s.toString());
-                                Double res = priceParsed*countParsed;
-                                price.setText(String.format("%.2f",res)+" Р");
+                                double res = priceParsed*countParsed;
+                                DecimalFormat dfP = new DecimalFormat("###.##");
+                                price.setText(dfP.format(res)+" Р");
 
                                 if(DataHolder.getData("newCheck")!=null) {
                                     Check newCheck = (Check) DataHolder.getData("newCheck");
                                     if(newCheck.updateItemCount(product.id,countParsed)) {
-                                        itemsSummData.setText(newCheck.getItemsCosts().toString());
+                                        itemsSummData.setText(dfP.format(newCheck.getItemsCosts()));
                                         DataHolder.setData("newCheck", newCheck);
                                     }
                                 }
                             }
                         }
                     });
-
                     // скрытое поле с id товара в чеке
                     TextView nomid = new TextView(FullCheckActivity.this);
                     nomid.setText(product.id);
@@ -218,7 +224,8 @@ public class FullCheckActivity extends AppCompatActivity implements View.OnClick
 
                     table.addView(row);
                 }
-                itemsSummData.setText(newCheck.getItemsCosts().toString());
+                DecimalFormat df = new DecimalFormat("###.#");
+                itemsSummData.setText(df.format(newCheck.getItemsCosts()));
             }
         }
     }

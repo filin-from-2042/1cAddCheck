@@ -115,7 +115,7 @@ public class Check {
                         "@newFullDocID = '"+newCheckID+"', " +
                         "@lineno = "+lineno.toString()+", " +
                         "@nomID = '"+product.id+"', " +
-                        "@cnt = "+product.count.toString()+", " +
+                        "@cnt = "+String.valueOf(product.count)+", " +
                         "@price = "+product.price.toString()+" " +
                         "SELECT @return_value";
 
