@@ -14,11 +14,13 @@ import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
-public class FullCheckActivity extends AppCompatActivity {
+public class FullCheckActivity extends AppCompatActivity implements View.OnClickListener {
 
     ArrayList<StoreRemainUnit> currentRemains = new ArrayList<StoreRemainUnit>();
     ArrayAdapter<StoreRemainUnit> remainsAdapter;
@@ -35,27 +37,13 @@ public class FullCheckActivity extends AppCompatActivity {
             }
         });
 
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-
-        fillTableItems();
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         // кнопка поиска товара
         Button addItemBtn = (Button) findViewById(R.id.addItemBtn);
-        addItemBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onSearchRequested();
-            }
-        });
+        addItemBtn.setOnClickListener(this);
+        // кнопка поиска товара
+        Button saveCheckBtn = (Button) findViewById(R.id.saveCheck);
+        saveCheckBtn.setOnClickListener(this);
+
         // инициализация списка с остатками
         ListView remainsLst = (ListView)findViewById(R.id.remainsList);
         this.currentRemains = new ArrayList<StoreRemainUnit>();
@@ -79,18 +67,57 @@ public class FullCheckActivity extends AppCompatActivity {
             if(newCheck.checkNumber==null) newCheck.initNewCheckNumber();
         }
 
+        fillTableItems();
+
         TextView checkNumberText = (TextView)findViewById(R.id.checkNumberText);
         checkNumberText.setText(newCheck.checkNumber);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unleashCheckNumber();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        DataHolder.setData("newCheck", null);
+    }
+
+
+    @Override
+    public void onClick(View v) {
+
+        switch(v.getId())
+        {
+            // кнопка сохранение нового чека
+            case R.id.saveCheck:
+            {
+                if(DataHolder.getData("newCheck") != null)
+                {
+                    Check newCheck = (Check) DataHolder.getData("newCheck");
+                    String checkRes = newCheck.save();
+                    Toast.makeText(FullCheckActivity.this, checkRes ,Toast.LENGTH_SHORT).show();
+                }
+            }break;
+            // кнопка поиска товара
+            case R.id.addItemBtn:
+            {
+                onSearchRequested();
+            }break;
+        }
     }
 
     // заполнение таблицы с товарами в чеке
     protected void fillTableItems()
     {
         TableLayout table = (TableLayout) findViewById(R.id.itemList);
+        table.removeAllViews();
         if(DataHolder.getData("newCheck") != null)
         {
             Check newCheck = (Check) DataHolder.getData("newCheck");
-            if(newCheck.newItems.size()>0) {
+            if(newCheck.newItems!= null && newCheck.newItems.size()>0) {
                 for (Map.Entry<String, Product> entry : newCheck.newItems.entrySet()) {
 
                     final Product product = entry.getValue();
@@ -136,7 +163,7 @@ public class FullCheckActivity extends AppCompatActivity {
 
                     final EditText  cnt = new EditText(FullCheckActivity.this);
                     cnt.setTextSize(18);
-                    cnt.setText(product.count);
+                    cnt.setText(product.count.toString());
                     cnt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                         public void onFocusChange(View v, boolean hasFocus) {
                             if(!hasFocus &&  cnt.getText().toString().isEmpty()) {
@@ -165,6 +192,11 @@ public class FullCheckActivity extends AppCompatActivity {
                                 Double res = priceParsed*countParsed;
                                 price.setText(String.format("%.2f",res)+" Р");
 
+                                if(DataHolder.getData("newCheck")!=null) {
+                                    Check newCheck = (Check) DataHolder.getData("newCheck");
+                                    if(newCheck.updateItemCount(product.id,countParsed))
+                                        DataHolder.setData("newCheck", newCheck);
+                                }
                             }
                         }
                     });
@@ -184,18 +216,6 @@ public class FullCheckActivity extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        unleashCheckNumber();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unleashCheckNumber();
     }
 
     protected void unleashCheckNumber()

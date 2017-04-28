@@ -49,8 +49,7 @@ public class SearchableItemActivity extends ListActivity {
                         newCheck.newItems = saveItems;
                     }
                     DataHolder.setData("newCheck", newCheck);
-                    Intent runAddCheckActivity = new Intent(SearchableItemActivity.this, FullCheckActivity.class);
-                    startActivity(runAddCheckActivity);
+                    finish();
                 }
             }
         });

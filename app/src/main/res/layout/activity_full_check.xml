@@ -1,20 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.uzmkkonov.a1caddcheck.FullCheckActivity">
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:orientation="vertical" >
 
-
-    <include layout="@layout/content_full_check" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/checkNumberText"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        android:text="TextView"
+        android:textAlignment="center"
+        android:paddingTop="5sp"
+        android:paddingBottom="5sp"/>
 
-</android.support.design.widget.CoordinatorLayout>
+    <Button
+        android:id="@+id/addItemBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/addNewItemBtnText" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemList">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            />
+    </TableLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/remainsList" />
+
+
+    <Button
+        android:id="@+id/saveCheck"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/saveCheckBtnText" />
+
+</LinearLayout>
