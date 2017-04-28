@@ -65,7 +65,7 @@ public class SearchableItemActivity extends ListActivity {
                     "      ,[CODE]" +
                     "      ,[DESCR]" +
                     "  FROM [elbase].[dbo].[SC148]" +
-                    "  WHERE (CODE LIKE '%"+search+"%' OR DESCR LIKE '%"+search+"%') AND ISMARK=0" +
+                    "  WHERE (CODE LIKE '%"+search+"%' OR DESCR LIKE '%"+search+"%') AND ISMARK=0 NAD ISFOLDER=2" +
                     "  ORDER BY ROW_ID DESC";
 
             ArrayList<Product> items = new ArrayList<Product>();
