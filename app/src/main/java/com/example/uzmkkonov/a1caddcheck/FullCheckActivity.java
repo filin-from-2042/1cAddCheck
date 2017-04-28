@@ -118,6 +118,8 @@ public class FullCheckActivity extends AppCompatActivity implements View.OnClick
         {
             Check newCheck = (Check) DataHolder.getData("newCheck");
             if(newCheck.newItems!= null && newCheck.newItems.size()>0) {
+
+                final TextView itemsSummData = (TextView)findViewById(R.id.itemsSummData);
                 for (Map.Entry<String, Product> entry : newCheck.newItems.entrySet()) {
 
                     final Product product = entry.getValue();
@@ -194,8 +196,10 @@ public class FullCheckActivity extends AppCompatActivity implements View.OnClick
 
                                 if(DataHolder.getData("newCheck")!=null) {
                                     Check newCheck = (Check) DataHolder.getData("newCheck");
-                                    if(newCheck.updateItemCount(product.id,countParsed))
+                                    if(newCheck.updateItemCount(product.id,countParsed)) {
+                                        itemsSummData.setText(newCheck.getItemsCosts().toString());
                                         DataHolder.setData("newCheck", newCheck);
+                                    }
                                 }
                             }
                         }
@@ -214,6 +218,7 @@ public class FullCheckActivity extends AppCompatActivity implements View.OnClick
 
                     table.addView(row);
                 }
+                itemsSummData.setText(newCheck.getItemsCosts().toString());
             }
         }
     }
