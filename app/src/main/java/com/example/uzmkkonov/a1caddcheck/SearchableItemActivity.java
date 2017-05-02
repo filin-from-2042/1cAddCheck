@@ -40,6 +40,7 @@ public class SearchableItemActivity extends ListActivity {
                 if(DataHolder.getData("newCheck")!=null) {
                     Check newCheck = (Check) DataHolder.getData("newCheck");
                     if (newCheck.newItems != null) {
+                        // TODO: Добавить функцию добавления эелемента в класс Check
                         HashMap<String, Product> oldItems = (HashMap<String, Product>) newCheck.newItems;
                         oldItems.put(productItem.id, productItem);
                         newCheck.newItems = oldItems;

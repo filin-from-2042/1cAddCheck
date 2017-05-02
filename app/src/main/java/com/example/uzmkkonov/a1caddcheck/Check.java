@@ -19,6 +19,7 @@ public class Check {
         this.initNewCheckNumber();
     }
 
+    // Блокировка нового номера чека в БД
     public void initNewCheckNumber()
     {
         if(this.connectionClass == null) this.connectionClass = new ConnectionClass();
@@ -40,7 +41,7 @@ public class Check {
         {
         }
     }
-
+    // Удаление блокировки на номер чека в БД
     public void checkNumberUnlock()
     {
         if(this.connectionClass == null) this.connectionClass = new ConnectionClass();
@@ -64,7 +65,7 @@ public class Check {
         }
 
     }
-
+    // сохранения нового чека со всеми данными в БД
     public String save()
     {
         User currUser = (User) DataHolder.getData("LoggedUser");
@@ -138,7 +139,7 @@ public class Check {
         }
         return CheckAddStatus.AddStatus.get(createCheckStatus);
     }
-
+    // Возвращает полную стоимость чека исходя из добавленного кол-ва товаров и их стоимости
     public Double getItemsCosts()
     {
         Double costs = 0d;
@@ -152,6 +153,7 @@ public class Check {
         return costs;
     }
 
+    // Обновляет кол-во товара в чеке по переданному идентификатору
     public boolean updateItemCount(String productID, Double newCount)
     {
         if (this.newItems != null && this.newItems.size()>0) {
@@ -163,7 +165,7 @@ public class Check {
             return true;
         }else return false;
     }
-
+    // удаляет товара из чека по переданнму идентификатору
     public void removeItemById(String itemID)
     {
         if (this.newItems != null && this.newItems.size()>0) {

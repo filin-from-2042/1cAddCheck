@@ -236,7 +236,7 @@ public class FullCheckActivity extends AppCompatActivity implements View.OnClick
             }
         }
     }
-
+    // создание контекстного меню к каждому элементу таблицы
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
@@ -246,7 +246,7 @@ public class FullCheckActivity extends AppCompatActivity implements View.OnClick
         inflater.inflate(R.menu.check_item_submenu, menu);
         currContextMenuItem = v.getTag().toString();
     }
-
+    // обработчик нажатия на пункт контекстного меню
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -265,8 +265,7 @@ public class FullCheckActivity extends AppCompatActivity implements View.OnClick
                 return super.onContextItemSelected(item);
         }
     }
-
-
+    // разблокировка номера чека
     protected void unleashCheckNumber()
     {
         if(DataHolder.getData("newCheck") != null) {
