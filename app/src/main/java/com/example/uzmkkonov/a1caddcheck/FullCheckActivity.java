@@ -126,6 +126,7 @@ public class FullCheckActivity extends AppCompatActivity implements View.OnClick
             if(newCheck.newItems!= null && newCheck.newItems.size()>0) {
 
                 final TextView itemsSummData = (TextView)findViewById(R.id.itemsSummData);
+                TextView nameLastView = null;
                 for (Map.Entry<String, Product> entry : newCheck.newItems.entrySet()) {
 
                     final Product product = entry.getValue();
@@ -166,6 +167,7 @@ public class FullCheckActivity extends AppCompatActivity implements View.OnClick
                     });
                     registerForContextMenu(name);
                     name.setTag(product.id);
+                    nameLastView = name;
 
                     final TextView price = new TextView(FullCheckActivity.this);
                     price.setTextSize(18);
@@ -211,7 +213,7 @@ public class FullCheckActivity extends AppCompatActivity implements View.OnClick
                                 if(DataHolder.getData("newCheck")!=null) {
                                     Check newCheck = (Check) DataHolder.getData("newCheck");
                                     if(newCheck.updateItemCount(product.id,countParsed)) {
-                                        itemsSummData.setText(dfP.format(newCheck.getItemsCosts()));
+                                        itemsSummData.setText(dfP.format(newCheck.getItemsCosts())+" Р");
                                         DataHolder.setData("newCheck", newCheck);
                                     }
                                 }
@@ -231,8 +233,9 @@ public class FullCheckActivity extends AppCompatActivity implements View.OnClick
 
                     table.addView(row);
                 }
+                if(nameLastView!=null) nameLastView.callOnClick();
                 DecimalFormat df = new DecimalFormat("###.#");
-                itemsSummData.setText(df.format(newCheck.getItemsCosts()));
+                itemsSummData.setText(df.format(newCheck.getItemsCosts())+" Р");
             }
         }
     }
@@ -258,7 +261,7 @@ public class FullCheckActivity extends AppCompatActivity implements View.OnClick
                     fillTableItems();
                     TextView itemsSummData = (TextView)findViewById(R.id.itemsSummData);
                     DecimalFormat dfP = new DecimalFormat("###.##");
-                    itemsSummData.setText(dfP.format(newCheck.getItemsCosts()));
+                    itemsSummData.setText(dfP.format(newCheck.getItemsCosts())+" Р");
                     return true;
                 } else return false;
             default:

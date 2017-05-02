@@ -59,7 +59,7 @@
             android:layout_weight="1"
             android:paddingBottom="5sp"
             android:paddingTop="5sp"
-            android:text="0"
+            android:text="0 Р"
             android:gravity="right"/>
 
     </LinearLayout>
