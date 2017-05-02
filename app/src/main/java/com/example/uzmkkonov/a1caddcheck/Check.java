@@ -154,14 +154,24 @@ public class Check {
 
     public boolean updateItemCount(String productID, Double newCount)
     {
-            if (this.newItems != null && this.newItems.size()>0) {
-                HashMap<String, Product> Items = (HashMap<String, Product>) this.newItems;
-                Product editingProduct = Items.get(productID);
-                editingProduct.count = newCount;
-                Items.put(productID, editingProduct);
-                this.newItems = Items;
-                return true;
-            }else return false;
+        if (this.newItems != null && this.newItems.size()>0) {
+            HashMap<String, Product> Items = (HashMap<String, Product>) this.newItems;
+            Product editingProduct = Items.get(productID);
+            editingProduct.count = newCount;
+            Items.put(productID, editingProduct);
+            this.newItems = Items;
+            return true;
+        }else return false;
+    }
+
+    public void removeItemById(String itemID)
+    {
+        if (this.newItems != null && this.newItems.size()>0) {
+            for (Map.Entry<String, Product> entry : this.newItems.entrySet()) {
+                Product product = entry.getValue();
+                if(product.id.equals(itemID)) this.newItems.remove(product.id);
+            }
+        }
     }
 
 }

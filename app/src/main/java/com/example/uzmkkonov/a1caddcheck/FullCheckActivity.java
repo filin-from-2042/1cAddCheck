@@ -6,7 +6,11 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +29,7 @@ public class FullCheckActivity extends AppCompatActivity implements View.OnClick
 
     ArrayList<StoreRemainUnit> currentRemains = new ArrayList<StoreRemainUnit>();
     ArrayAdapter<StoreRemainUnit> remainsAdapter;
+    String currContextMenuItem = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,6 +164,8 @@ public class FullCheckActivity extends AppCompatActivity implements View.OnClick
                             }
                         }
                     });
+                    registerForContextMenu(name);
+                    name.setTag(product.id);
 
                     final TextView price = new TextView(FullCheckActivity.this);
                     price.setTextSize(18);
@@ -229,6 +236,36 @@ public class FullCheckActivity extends AppCompatActivity implements View.OnClick
             }
         }
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+
+        inflater.inflate(R.menu.check_item_submenu, menu);
+        currContextMenuItem = v.getTag().toString();
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.remove:
+                if(DataHolder.getData("newCheck") != null) {
+                    Check newCheck = (Check) DataHolder.getData("newCheck");
+                    newCheck.removeItemById(currContextMenuItem);
+                    fillTableItems();
+                    TextView itemsSummData = (TextView)findViewById(R.id.itemsSummData);
+                    DecimalFormat dfP = new DecimalFormat("###.##");
+                    itemsSummData.setText(dfP.format(newCheck.getItemsCosts()));
+                    return true;
+                } else return false;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
 
     protected void unleashCheckNumber()
     {
