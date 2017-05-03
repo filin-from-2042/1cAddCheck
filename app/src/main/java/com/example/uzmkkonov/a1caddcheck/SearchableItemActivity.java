@@ -65,6 +65,7 @@ public class SearchableItemActivity extends ListActivity {
             String query = "SELECT [ID]" +
                     "      ,[CODE]" +
                     "      ,[DESCR]" +
+                    "      ,[SP131] "+
                     "  FROM [elbase].[dbo].[SC148]" +
                     "  WHERE (CODE LIKE '%"+search+"%' OR DESCR LIKE '%"+search+"%') AND ISMARK=0 AND ISFOLDER=2" +
                     "  ORDER BY ROW_ID DESC";
@@ -77,7 +78,7 @@ public class SearchableItemActivity extends ListActivity {
                     ResultSet rs = stmt.executeQuery(query);
 
                     while (rs.next()) {
-                        items.add(new Product(rs.getString(1),rs.getString(2),rs.getString(3)));
+                        items.add(new Product(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4)));
                     }
                 }
             }

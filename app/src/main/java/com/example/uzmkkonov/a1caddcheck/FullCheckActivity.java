@@ -122,6 +122,7 @@ public class FullCheckActivity extends AppCompatActivity implements View.OnClick
         table.removeAllViews();
         if(DataHolder.getData("newCheck") != null)
         {
+            int nameTextLength = 30;
             Check newCheck = (Check) DataHolder.getData("newCheck");
             if(newCheck.newItems!= null && newCheck.newItems.size()>0) {
 
@@ -133,41 +134,12 @@ public class FullCheckActivity extends AppCompatActivity implements View.OnClick
 
                     TableRow row = new TableRow(FullCheckActivity.this);
 
-                    TextView code = new TextView(FullCheckActivity.this);
-                    code.setTextSize(18);
-                    code.setText(product.code + " | ");
-
-                    TextView name = new TextView(FullCheckActivity.this);
-                    name.setTextSize(18);
-                    name.setText(product.name.substring(0,19));
-                    name.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            String nomID = product.id;
-                            if(DataHolder.getData("newCheck") != null)
-                            {
-                                Check newCheck = (Check) DataHolder.getData("newCheck");
-
-                                if(newCheck.newItems.size()>0) {
-                                    Product productData = newCheck.newItems.get(nomID);
-                                    currentRemains.clear();
-                                    if (productData.remains != null && productData.remains.size() > 0) {
-                                        for (StoreRemainUnit tprd : productData.remains) {
-                                            currentRemains.add(tprd);
-                                        }
-                                    } else {
-                                        ///TODO: механизм для вывода отсутсвующих остатков
-                                        StoreRemainUnit emptyRemain = new StoreRemainUnit("0", "Нет в наличии", 0.0);
-                                        currentRemains.add(emptyRemain);
-                                    }
-                                    remainsAdapter.notifyDataSetChanged();
-                                }
-                            }
-                        }
-                    });
-                    registerForContextMenu(name);
-                    name.setTag(product.id);
-                    nameLastView = name;
+                    TextView artCode = new TextView(FullCheckActivity.this);
+                    artCode.setTextSize(18);
+                    String artCodeStr = product.code + " | " + product.articul;
+                    artCode.setText(artCodeStr.substring(0,(artCodeStr.length()>nameTextLength)?nameTextLength:artCodeStr.length()-1));
+                    artCode.setTag(product.id);
+                    registerForContextMenu(artCode);
 
                     final TextView price = new TextView(FullCheckActivity.this);
                     price.setTextSize(18);
@@ -225,17 +197,61 @@ public class FullCheckActivity extends AppCompatActivity implements View.OnClick
                     nomid.setText(product.id);
                     nomid.setVisibility(View.INVISIBLE);
 
-                    row.addView(code);
-                    row.addView(name);
+                    row.addView(artCode);
                     row.addView(cnt);
                     row.addView(price);
                     row.addView(nomid);
 
                     table.addView(row);
+
+
+                    row = new TableRow(FullCheckActivity.this);
+
+                    TextView name = new TextView(FullCheckActivity.this);
+                    name.setTextSize(18);
+                    name.setText(product.name.substring(0,nameTextLength));
+                    //name.setText(product.name);
+                    name.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String nomID = product.id;
+                            if(DataHolder.getData("newCheck") != null)
+                            {
+                                Check newCheck = (Check) DataHolder.getData("newCheck");
+
+                                if(newCheck.newItems.size()>0) {
+                                    Product productData = newCheck.newItems.get(nomID);
+                                    currentRemains.clear();
+                                    if (productData.remains != null && productData.remains.size() > 0) {
+                                        for (StoreRemainUnit tprd : productData.remains) {
+                                            currentRemains.add(tprd);
+                                        }
+                                    } else {
+                                        ///TODO: механизм для вывода отсутсвующих остатков
+                                        StoreRemainUnit emptyRemain = new StoreRemainUnit("0", "Нет в наличии", 0.0);
+                                        currentRemains.add(emptyRemain);
+                                    }
+                                    remainsAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        }
+                    });
+                    //name.setMaxWidth(200);
+                    registerForContextMenu(name);
+                    name.setTag(product.id);
+                    nameLastView = name;
+
+                    row.addView(name);
+                    table.addView(row);
                 }
                 if(nameLastView!=null) nameLastView.callOnClick();
                 DecimalFormat df = new DecimalFormat("###.#");
                 itemsSummData.setText(df.format(newCheck.getItemsCosts())+" Р");
+            }
+            else
+            {
+                currentRemains.clear();
+                remainsAdapter.notifyDataSetChanged();
             }
         }
     }
@@ -256,12 +272,15 @@ public class FullCheckActivity extends AppCompatActivity implements View.OnClick
         switch (item.getItemId()) {
             case R.id.remove:
                 if(DataHolder.getData("newCheck") != null) {
-                    Check newCheck = (Check) DataHolder.getData("newCheck");
-                    newCheck.removeItemById(currContextMenuItem);
-                    fillTableItems();
-                    TextView itemsSummData = (TextView)findViewById(R.id.itemsSummData);
-                    DecimalFormat dfP = new DecimalFormat("###.##");
-                    itemsSummData.setText(dfP.format(newCheck.getItemsCosts())+" Р");
+                    if(!currContextMenuItem.isEmpty()) {
+                        Check newCheck = (Check) DataHolder.getData("newCheck");
+                        newCheck.removeItemById(currContextMenuItem);
+                        fillTableItems();
+                        TextView itemsSummData = (TextView) findViewById(R.id.itemsSummData);
+                        DecimalFormat dfP = new DecimalFormat("###.##");
+                        itemsSummData.setText(dfP.format(newCheck.getItemsCosts()) + " Р");
+                        currContextMenuItem="";
+                    }
                     return true;
                 } else return false;
             default:

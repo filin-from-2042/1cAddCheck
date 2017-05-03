@@ -12,6 +12,7 @@ public class Product {
     ///TODO: получение id должно быть через  get
     public String id;
     public String code;
+    public String articul;
     public String name;
     public double count = 1.0;
     public Double price;
@@ -23,10 +24,11 @@ public class Product {
         super();
     }
 
-    public Product(String id, String code, String name) {
+    public Product(String id, String code, String name, String articul) {
         super();
         this.id = id;
         this.code = code;
+        this.articul = articul;
         this.name = name;
     }
 
