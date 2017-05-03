@@ -21,6 +21,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class SearchableItemActivity extends ListActivity {
@@ -41,11 +42,11 @@ public class SearchableItemActivity extends ListActivity {
                     Check newCheck = (Check) DataHolder.getData("newCheck");
                     if (newCheck.newItems != null) {
                         // TODO: Добавить функцию добавления эелемента в класс Check
-                        HashMap<String, Product> oldItems = (HashMap<String, Product>) newCheck.newItems;
+                        LinkedHashMap<String, Product> oldItems = (LinkedHashMap<String, Product>) newCheck.newItems;
                         oldItems.put(productItem.id, productItem);
                         newCheck.newItems = oldItems;
                     } else {
-                        HashMap<String, Product> saveItems = new HashMap<String, Product>();
+                        LinkedHashMap<String, Product> saveItems = new LinkedHashMap <String, Product>();
                         saveItems.put(productItem.id, productItem);
                         newCheck.newItems = saveItems;
                     }

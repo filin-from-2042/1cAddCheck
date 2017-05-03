@@ -11,7 +11,7 @@ public class Check {
 
     ConnectionClass connectionClass;
     String checkNumber;
-    HashMap<String,Product> newItems;
+    Map<String,Product> newItems;
 
     public Check()
     {
