@@ -5,6 +5,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
@@ -122,7 +125,7 @@ public class FullCheckActivity extends AppCompatActivity implements View.OnClick
         table.removeAllViews();
         if(DataHolder.getData("newCheck") != null)
         {
-            int nameTextLength = 30;
+            int nameTextLength = 25;
             Check newCheck = (Check) DataHolder.getData("newCheck");
             if(newCheck.newItems!= null && newCheck.newItems.size()>0) {
 
@@ -148,7 +151,7 @@ public class FullCheckActivity extends AppCompatActivity implements View.OnClick
 
                     final EditText  cnt = new EditText(FullCheckActivity.this);
                     cnt.setTextSize(18);
-                    //cnt.setText(String.format("%s",product.count));
+                    //cnt.setInputType(InputType.TYPE_CLASS_PHONE);
 
                     DecimalFormat dfCnt = new DecimalFormat("###.#");
                     cnt.setText(String.valueOf(dfCnt.format(product.count)));
@@ -176,18 +179,24 @@ public class FullCheckActivity extends AppCompatActivity implements View.OnClick
                         public void onTextChanged(CharSequence s, int start,
                                                   int before, int count) {
                             if(s.length() != 0){
-                                double priceParsed = product.price;
-                                double countParsed = Double.parseDouble(s.toString());
-                                double res = priceParsed*countParsed;
-                                DecimalFormat dfP = new DecimalFormat("###.##");
-                                price.setText(dfP.format(res)+" Р");
+                                try
+                                {
+                                    double countParsed = Double.parseDouble(s.toString());
+                                    double priceParsed = product.price;
+                                    double res = priceParsed*countParsed;
+                                    DecimalFormat dfP = new DecimalFormat("###.##");
+                                    price.setText(dfP.format(res)+" Р");
 
-                                if(DataHolder.getData("newCheck")!=null) {
-                                    Check newCheck = (Check) DataHolder.getData("newCheck");
-                                    if(newCheck.updateItemCount(product.id,countParsed)) {
-                                        itemsSummData.setText(dfP.format(newCheck.getItemsCosts())+" Р");
-                                        DataHolder.setData("newCheck", newCheck);
+                                    if(DataHolder.getData("newCheck")!=null) {
+                                        Check newCheck = (Check) DataHolder.getData("newCheck");
+                                        if(newCheck.updateItemCount(product.id,countParsed)) {
+                                            itemsSummData.setText(dfP.format(newCheck.getItemsCosts())+" Р");
+                                            DataHolder.setData("newCheck", newCheck);
+                                        }
                                     }
+                                }
+                                catch(NumberFormatException nfe)
+                                {
                                 }
                             }
                         }
