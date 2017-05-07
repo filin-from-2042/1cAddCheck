@@ -79,7 +79,7 @@ public class Check {
         String newCheckID = "";
         String query = "DECLARE @return_value int " +
                         "DECLARE @NEWDOC char(9) " +
-                        "EXEC @return_value = [elbase].[dbo].[sp_CreateNewCheck] " +
+                        "EXEC @return_value = [sp_CreateNewCheck] " +
                         "@docno = '"+this.checkNumber+"', " +
                         "@stockID = '"+((currUser.stockID!=null)?currUser.stockID:"") +"', " +
                         "@cashBox = '"+((currUser.cashBoxID!=null)?currUser.cashBoxID:"")+"', " +

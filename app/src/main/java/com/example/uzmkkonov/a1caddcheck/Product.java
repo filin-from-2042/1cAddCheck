@@ -38,7 +38,7 @@ public class Product {
         if(this.connectionClass == null) this.connectionClass = new ConnectionClass();
         Connection con = connectionClass.CONN();
 
-        String query = "SELECT NOMID, CODE, DESCR, WEIGHT, NOMPRICE FROM [elbase].[dbo].[GetNomenclatureData]('"+this.id+"')";
+        String query = "SELECT NOMID, CODE, DESCR, WEIGHT, NOMPRICE FROM [GetNomenclatureData]('"+this.id+"')";
         try {
             if(con!=null)
             {
@@ -60,7 +60,7 @@ public class Product {
     {
         if(this.connectionClass == null) this.connectionClass = new ConnectionClass();
         Connection con = connectionClass.CONN();
-        String query = "SELECT STOREID, STORENAME, UNITCOUNT FROM [elbase].[dbo].[GetUnitRemains]('"+this.id+"')";
+        String query = "SELECT STOREID, STORENAME, UNITCOUNT FROM [GetUnitRemains]('"+this.id+"')";
 
         try {
             if(con!=null)
