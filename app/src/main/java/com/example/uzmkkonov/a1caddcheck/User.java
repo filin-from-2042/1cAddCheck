@@ -14,6 +14,8 @@ public class User extends  Object{
     String companyName;
     String cashBoxID;
     String cashBoxName;
+    String currProject;
+    String checkCompanyID;
 
     public User(String login, String pwd)
     {
@@ -26,10 +28,12 @@ public class User extends  Object{
                             "CMP.ID AS COMPANYID, " +
                             "CMP.DESCR AS COMPANYNAME, " +
                             "CB.ID AS CASHBOXID," +
-                            "CB.DESCR AS CASHBOXNAME " +
+                            "CB.DESCR AS CASHBOXNAME, " +
+                            "US.SP190 AS CURRENTPROJECT, " +
+                            "US.SP2173 AS CHECKCOMPANYID " +
                         "FROM ["+ConnectionClass.db+"].["+ConnectionClass.scheme+"].[SC201] US " +
                         "LEFT JOIN ["+ConnectionClass.db+"].["+ConnectionClass.scheme+"].[SC288] ST ON ST.ID=US.SP191 AND ST.ISMARK=0" +
-                        "LEFT JOIN ["+ConnectionClass.db+"].["+ConnectionClass.scheme+"].[SC321] CMP ON CMP.ID=US.SP181 AND CMP.ISMARK=0" +
+                        "LEFT JOIN ["+ConnectionClass.db+"].["+ConnectionClass.scheme+"].[SC321] CMP ON CMP.ID=US.SP187 AND CMP.ISMARK=0" +
                         "LEFT JOIN ["+ConnectionClass.db+"].["+ConnectionClass.scheme+"].[SC106] CB ON CB.ID=US.SP183 AND CB.ISMARK=0 " +
                         "WHERE LTRIM(RTRIM(US.CODE)) = '"+login+"' AND US.ISMARK = 0 AND LTRIM(RTRIM(US.SP194))='"+pwd+"' " +
                         "ORDER BY US.ROW_ID DESC";
@@ -49,6 +53,8 @@ public class User extends  Object{
                     companyName = rs.getString(6);
                     cashBoxID = rs.getString(7);
                     cashBoxName = rs.getString(8);
+                    currProject = rs.getString(9);
+                    checkCompanyID = rs.getString(10);
                 }
             }
         }

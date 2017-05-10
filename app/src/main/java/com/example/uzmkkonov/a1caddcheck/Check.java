@@ -84,6 +84,9 @@ public class Check {
                         "@stockID = '"+((currUser.stockID!=null)?currUser.stockID:"") +"', " +
                         "@cashBox = '"+((currUser.cashBoxID!=null)?currUser.cashBoxID:"")+"', " +
                         "@costSum = "+this.getItemsCosts().toString()+", " +
+                        "@authorID = '"+((currUser.userID!=null)?currUser.userID:"")+"', " +
+                        "@authorCompanyID = '"+((currUser.checkCompanyID!=null)?currUser.checkCompanyID:"")+"', " +
+                        "@authorCurrProject = '"+((currUser.currProject!=null)?currUser.currProject:"")+"', " +
                         "@addedDocNum=@NEWDOC OUTPUT " +
                         "SELECT @return_value,@NEWDOC";
         try {
