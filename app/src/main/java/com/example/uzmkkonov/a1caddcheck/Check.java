@@ -25,7 +25,7 @@ public class Check {
         if(this.connectionClass == null) this.connectionClass = new ConnectionClass();
         Connection con = connectionClass.CONN();
 
-        String query = "EXEC [dbo].[sp_initNewCheck]";
+        String query = "EXEC ["+ConnectionClass.db+"].["+ConnectionClass.scheme+"].[sp_initNewCheck]";
         try {
             if(con!=null)
             {
@@ -47,7 +47,7 @@ public class Check {
         if(this.connectionClass == null) this.connectionClass = new ConnectionClass();
         Connection con = connectionClass.CONN();
 
-        String query = "EXEC [dbo].[sp_BlockDocNumber] " +
+        String query = "EXEC ["+ConnectionClass.db+"].["+ConnectionClass.scheme+"].[sp_BlockDocNumber] " +
                 "@DNPREFIX = '"+DocumentTypes.CHECK+"'," +
                 "@DOCNUMBER = '"+this.checkNumber+"'," +
                 "@BLOCK = 0";
@@ -79,7 +79,7 @@ public class Check {
         String newCheckID = "";
         String query = "DECLARE @return_value int " +
                         "DECLARE @NEWDOC char(9) " +
-                        "EXEC @return_value = [sp_CreateNewCheck] " +
+                        "EXEC @return_value = ["+ConnectionClass.db+"].["+ConnectionClass.scheme+"].[sp_CreateNewCheck] " +
                         "@docno = '"+this.checkNumber+"', " +
                         "@stockID = '"+((currUser.stockID!=null)?currUser.stockID:"") +"', " +
                         "@cashBox = '"+((currUser.cashBoxID!=null)?currUser.cashBoxID:"")+"', " +
@@ -112,7 +112,7 @@ public class Check {
             for (Map.Entry<String, Product> entry : this.newItems.entrySet()) {
                 Product product = entry.getValue();
                 query = "DECLARE @return_value int " +
-                        "EXEC @return_value = [dbo].[sp_addCheckDT] " +
+                        "EXEC @return_value = ["+ConnectionClass.db+"].["+ConnectionClass.scheme+"].[sp_addCheckDT] " +
                         "@newFullDocID = '"+newCheckID+"', " +
                         "@lineno = "+lineno.toString()+", " +
                         "@nomID = '"+product.id+"', " +

@@ -13,8 +13,9 @@ public class ConnectionClass {
     String ip = "192.168.0.105:2301";
     String classs = "net.sourceforge.jtds.jdbc.Driver";
 //    String db = "elektrika";
-    String db = "elbase";
-//    String un = "el";
+    public static String db = "elbase";
+    public static String scheme = "dbo";
+//   public static String un = "el";
     String un = "sa";
     String password = "Qwe12345";
 

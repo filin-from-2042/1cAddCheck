@@ -27,10 +27,10 @@ public class User extends  Object{
                             "CMP.DESCR AS COMPANYNAME, " +
                             "CB.ID AS CASHBOXID," +
                             "CB.DESCR AS CASHBOXNAME " +
-                        "FROM [SC201] US " +
-                        "LEFT JOIN [SC288] ST ON ST.ID=US.SP191 AND ST.ISMARK=0" +
-                        "LEFT JOIN [SC321] CMP ON CMP.ID=US.SP181 AND CMP.ISMARK=0" +
-                        "LEFT JOIN [SC106] CB ON CB.ID=US.SP183 AND CB.ISMARK=0 " +
+                        "FROM ["+ConnectionClass.db+"].["+ConnectionClass.scheme+"].[SC201] US " +
+                        "LEFT JOIN ["+ConnectionClass.db+"].["+ConnectionClass.scheme+"].[SC288] ST ON ST.ID=US.SP191 AND ST.ISMARK=0" +
+                        "LEFT JOIN ["+ConnectionClass.db+"].["+ConnectionClass.scheme+"].[SC321] CMP ON CMP.ID=US.SP181 AND CMP.ISMARK=0" +
+                        "LEFT JOIN ["+ConnectionClass.db+"].["+ConnectionClass.scheme+"].[SC106] CB ON CB.ID=US.SP183 AND CB.ISMARK=0 " +
                         "WHERE LTRIM(RTRIM(US.CODE)) = '"+login+"' AND US.ISMARK = 0 AND LTRIM(RTRIM(US.SP194))='"+pwd+"' " +
                         "ORDER BY US.ROW_ID DESC";
 

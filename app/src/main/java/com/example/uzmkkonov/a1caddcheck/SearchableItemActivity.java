@@ -67,7 +67,7 @@ public class SearchableItemActivity extends ListActivity {
                     "      ,[CODE]" +
                     "      ,[DESCR]" +
                     "      ,[SP131] "+
-                    "  FROM [SC148]" +
+                    "  FROM ["+ConnectionClass.db+"].["+ConnectionClass.scheme+"].[SC148]" +
                     "  WHERE (CODE LIKE '%"+search+"%' OR DESCR LIKE '%"+search+"%') AND ISMARK=0 AND ISFOLDER=2" +
                     "  ORDER BY ROW_ID DESC";
 
