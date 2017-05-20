@@ -9,14 +9,14 @@ import java.sql.DriverManager;
 import java.util.Properties;
 
 public class ConnectionClass {
-//    String ip = "192.168.1.100:2301";
-    String ip = "192.168.0.105:2301";
+    String ip = "192.168.1.100:2301";
+//    String ip = "192.168.0.105:2301";
     String classs = "net.sourceforge.jtds.jdbc.Driver";
-//    String db = "elektrika";
-    public static String db = "elbase";
+    public static String db = "elektrika";
+//    public static String db = "elbase";
     public static String scheme = "dbo";
-//   public static String un = "el";
-    String un = "sa";
+   public static String un = "el";
+//    String un = "sa";
     String password = "Qwe12345";
 
     @SuppressLint("NewApi")

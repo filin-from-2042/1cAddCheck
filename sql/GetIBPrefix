@@ -1,0 +1,28 @@
+USE [elbase]
+GO
+/****** Object:  UserDefinedFunction [dbo].[GetIBPrefix]    Script Date: 05/20/2017 10:02:16 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Конов А. В.
+-- Create date: 19.04.2017
+-- Description:	Возвращает префикс текущей информационной базы
+-- =============================================
+ALTER FUNCTION [dbo].[GetIBPrefix]
+(
+)
+RETURNS varchar(255)
+AS
+BEGIN
+	DECLARE @PREFIX varchar(266)
+
+	SELECT TOP 1  @PREFIX=VALUE
+	FROM [dbo].[_1SCONST]
+	WHERE ID='21' and OBJID='     0   ' and DATE<='1753-01-01 00:00:00'
+	ORDER BY ID DESC, OBJID DESC, DATE DESC, TIME DESC, DOCID DESC
+
+	RETURN @PREFIX
+
+END

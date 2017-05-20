@@ -1,0 +1,32 @@
+USE [elbase]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_BlockDocNumber]    Script Date: 05/20/2017 09:58:48 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Конов А. В.
+-- Create date: 19.04.2017
+-- Description:	Блокировать, разблокировать номер чека
+-- =============================================
+ALTER PROCEDURE [dbo].[sp_BlockDocNumber]
+	@DNPREFIX char(28),
+	@DOCNUMBER char(24),
+	@BLOCK bit	-- 1-блокировать
+				-- 0-разблокировать
+AS
+BEGIN
+	SET @DNPREFIX=RTRIM(LTRIM(@DNPREFIX))+CAST(YEAR(GETDATE()) as varchar(4))
+	SET @DOCNUMBER=RTRIM(LTRIM(@DOCNUMBER))
+	SET @BLOCK = ISNULL(@BLOCK,0)
+
+	DELETE
+	FROM [dbo].[_1SDNLOCK]
+	WHERE  RTRIM(LTRIM(DNPREFIX))=@DNPREFIX AND RTRIM(LTRIM(DOCNO))=@DOCNUMBER
+
+	IF @BLOCK=1
+	BEGIN
+		INSERT INTO [dbo].[_1SDNLOCK] VALUES('      '+@DNPREFIX+'              ',LEFT(@DOCNUMBER+'                  ',24))
+	END
+END

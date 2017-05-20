@@ -1,0 +1,29 @@
+USE [elbase]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_addCheckDT]    Script Date: 05/20/2017 09:57:48 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Конов А. В.
+-- Create date: 26.04.2017
+-- Description:	Добавляет запись в табличную часть чека
+-- =============================================
+ALTER PROCEDURE [dbo].[sp_addCheckDT]
+	@newFullDocID char(9),
+	@lineno smallint,
+	@nomID char(9),
+	@cnt numeric(13,3),
+	@price numeric(11,3)
+AS
+BEGIN
+
+	DECLARE @units char(9)
+	SELECT TOP 1 @units=SP139
+	FROM dbo.SC148
+	WHERE RTRIM(LTRIM(ID)) = RTRIM(LTRIM(@nomID))
+
+	 INSERT INTO dbo.DT1473 ([IDDOC] 	 ,	[LINENO_]	,[SP1465]       ,[SP1466]   ,[SP1467]	,[SP1468]   ,[SP1469]	,[SP1470]	,[SP1471])
+					VALUES( @newFullDocID,	@lineno		,'             ',@nomID		,@cnt		,@units		,1.000		,@price		,@price*@cnt)
+END

@@ -1,0 +1,27 @@
+USE [elbase]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_initNewCheck]    Script Date: 05/20/2017 09:59:41 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Конов А. В.
+-- Create date: 19.04.2017
+-- Description:	Инициализация нового чека
+-- =============================================
+ALTER PROCEDURE [dbo].[sp_initNewCheck]
+AS
+BEGIN
+	DECLARE @CURIBPREFIX varchar(255)
+	SELECT @CURIBPREFIX = [dbo].[GetIBPrefix] ()
+
+	DECLARE @FREENUMBER char(10)
+	SELECT @FREENUMBER = [dbo].[GetFreeNumber] (@CURIBPREFIX)
+
+	EXEC [dbo].[sp_BlockDocNumber]
+		@DNPREFIX = '1473',
+		@DOCNUMBER = @FREENUMBER,
+		@BLOCK = 1
+	SELECT @FREENUMBER
+END

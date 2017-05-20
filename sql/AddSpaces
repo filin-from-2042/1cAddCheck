@@ -1,0 +1,58 @@
+USE [elbase]
+GO
+/****** Object:  UserDefinedFunction [dbo].[AddSpaces]    Script Date: 05/20/2017 10:00:52 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Конов А. В.
+-- Create date: 24.04.2017
+-- Description:	Добавляет переданное кол-во пробелов к данным с указанной стороны
+-- =============================================
+ALTER FUNCTION [dbo].[AddSpaces]
+(
+	@data varchar(255),
+	@resLength int,
+	@position bit	-- 0-пробелы слева
+					-- 1-пробелы справа
+)
+RETURNS varchar(255)
+AS
+BEGIN
+
+	SET @data = RTRIM(LTRIM(@data))
+
+	DECLARE @spacesCount int
+	DECLARE @currDataLen int
+	SET @currDataLen =  LEN(@data)
+
+	IF @resLength > @currDataLen
+	BEGIN
+		SET @spacesCount = @resLength- LEN(@data)
+	END
+	ELSE
+	BEGIN
+		RETURN SUBSTRING(@data,1,@resLength)
+	END
+
+	DECLARE @counter INT
+	SET @counter = 0
+
+	WHILE @counter < @spacesCount
+	BEGIN
+		IF @position=0
+		BEGIN
+			SET @data = ' '+@data
+		END
+
+		IF @position=1
+		BEGIN
+			SET @data = @data+' '
+		END
+
+		SET @counter = @counter+1
+	END
+
+	RETURN @data
+END

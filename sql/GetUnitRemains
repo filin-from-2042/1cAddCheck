@@ -1,0 +1,44 @@
+USE [elbase]
+GO
+/****** Object:  UserDefinedFunction [dbo].[GetUnitRemains]    Script Date: 05/20/2017 10:00:29 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Конов А. В.
+-- Create date: 17.04.2017
+-- Description:	Возвращает остатки по id номенклатуры с учетом точки актуальности
+-- =============================================
+ALTER FUNCTION [dbo].[GetUnitRemains]
+(
+	@nomID char(9)
+)
+RETURNS @RESULT TABLE
+(
+	STOREID char(9),
+	STORENAME char(50),
+	UNITCOUNT numeric(14,5)
+)
+AS
+BEGIN
+	-- дата актуальности для регистра
+	DECLARE @ACTPERIOD datetime
+	SELECT @ACTPERIOD=CONVERT(datetime, CONVERT(char(2), MONTH([CURDATE])) + '/1/' + CONVERT(char(4), YEAR([CURDATE])), 101)
+	FROM [dbo].[_1SSYSTEM]
+
+	INSERT INTO @RESULT
+	SELECT RG.SP2047
+	,S.DESCR
+	,SUM(RG.SP2049)
+	FROM [dbo].[RG2051] RG
+	LEFT JOIN [dbo].[SC288] S ON S.ID=RG.[SP2047] AND S.ISMARK=0
+	WHERE RG.PERIOD=@ACTPERIOD
+		AND RG.SP2045 IN (SELECT CM.ID FROM [dbo].[SC321] CM)
+		AND RTRIM(LTRIM(RG.SP2046)) = RTRIM(LTRIM(@nomID))
+		AND RG.SP2047 IN (SELECT S2.ID FROM [dbo].[SC288] S2 WHERE S2.ISMARK=0)
+	GROUP BY S.DESCR,RG.SP2047
+
+
+	RETURN
+END
